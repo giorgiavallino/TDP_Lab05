@@ -35,23 +35,22 @@ class View():
                               color="blue",
                               size=24)
         # Elementi grafici
-        self._ddCorsi = ft.Dropdown(label="Selezionare un corso",
+        self._ddCorsi = ft.Dropdown(label="Corso",
                                     hint_text="Selezionare un corso",
                                     width=750)
         self.fillDDCorsi()
         self._btnCercaIscritti = ft.ElevatedButton(text="Cerca iscritti",
-                                                   on_click=self._controller.cercaSIscritti)
-        self._txtInMatricola = ft.TextField(value="Matricola",
-                                            hint_text="Inserisci il numero della matricola",
-                                            width=200)
-        self._txtNome = ft.TextField(value="Nome",
+                                                   on_click=self._controller.cercaStudentiByCorso)
+        self._txtInMatricola = ft.TextField(label="Matricola",
+                                            hint_text="Inserisci il numero della matricola")
+        self._txtNome = ft.TextField(label="Nome",
                                       read_only=True)
-        self._txtCognome = ft.TextField(value="Cognome",
+        self._txtCognome = ft.TextField(label="Cognome",
                                         read_only=True)
         self._btnCercaStudente = ft.ElevatedButton(text="Cerca studente",
-                                                   disabled=True)
+                                                   on_click=self._controller.cercaStudenteByMatricola)
         self._btnCercaCorsi = ft.ElevatedButton(text="Cerca corsi",
-                                                disabled=True)
+                                                on_click=self._controller.cercaCorsiByMatricola)
         self._btnIscrivi = ft.ElevatedButton(text="Iscrivi",
                                              disabled=True)
         self._txtOut = ft.ListView(expand=True)
@@ -63,8 +62,7 @@ class View():
                         alignment=ft.MainAxisAlignment.CENTER)
         row_04 = ft.Row([self._btnCercaStudente, self._btnCercaCorsi, self._btnIscrivi],
                         alignment=ft.MainAxisAlignment.CENTER)
-        row_05 = ft.Container(self._txtOut)
-        self._page.add(row_01, row_02, row_03, row_04, row_05)
+        self._page.add(row_01, row_02, row_03, row_04, self._txtOut)
         self._page.update()
         self._alert_dialog = ft.AlertDialog(title=ft.Text(""))
         if self._alert_dialog not in self._page.overlay:
