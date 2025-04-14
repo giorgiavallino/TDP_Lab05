@@ -1,46 +1,70 @@
 import flet as ft
 
+class View():
 
-class View(ft.UserControl):
     def __init__(self, page: ft.Page):
         super().__init__()
-        # page stuff
+        # Page stuff
         self._page = page
-        self._page.title = "Lab O5 - segreteria studenti"
+        self._page.title = "Lab O5 - Segreteria studenti"
         self._page.horizontal_alignment = 'CENTER'
         self._page.theme_mode = ft.ThemeMode.LIGHT
-        # controller (it is not initialized. Must be initialized in the main, after the controller is created)
+        # Controller (it is not initialized. Must be initialized in the main, after the controller is created)
         self._controller = None
-        # graphical elements
+        # Graphical elements
         self._title = None
-        self.txt_name = None
-        self.btn_hello = None
-        self.txt_result = None
-        self.txt_container = None
+        self._ddCorso = None
+        self._btnCercaIscritti = None
+        self._txtInMatricola = None
+        self._txtNome = None
+        self._txtCognome = None
+        self._btnCercaStudente = None
+        self._btnCercaCorsi = None
+        self._btnIscrivi = None
+        self._txtOut = None
+
+    def fillDDCorso(self):
+        corsi = self._controller.getCorsi()
+        for corso in corsi:
+            self._ddCorso.options.append(ft.dropdown.Option(key=corso.codins, text=corso.__str__()))
 
     def load_interface(self):
         """Function that loads the graphical elements of the view"""
-        # title
-        self._title = ft.Text("Hello World", color="blue", size=24)
-        self._page.controls.append(self._title)
-
-        #ROW with some controls
-        # text field for the name
-        self.txt_name = ft.TextField(
-            label="name",
-            width=200,
-            hint_text="Insert a your name"
-        )
-
-        # button for the "hello" reply
-        self.btn_hello = ft.ElevatedButton(text="Hello", on_click=self._controller.handle_hello)
-        row1 = ft.Row([self.txt_name, self.btn_hello],
-                      alignment=ft.MainAxisAlignment.CENTER)
-        self._page.controls.append(row1)
-
-        # List View where the reply is printed
-        self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
-        self._page.controls.append(self.txt_result)
+        # Title
+        self._title = ft.Text("App Gestione Studenti",
+                              color="blue",
+                              size=24)
+        # Elementi grafici
+        self._ddCorso = ft.Dropdown(value="Corso",
+                                    label="Selezionare un corso",
+                                    hint_text="Selezionare un corso",
+                                    width=750)
+        self.fillDDCorso()
+        self._btnCercaIscritti = ft.ElevatedButton(text="Cerca iscritti",
+                                                   disabled=True)
+        self._txtInMatricola = ft.TextField(value="Matricola",
+                                            hint_text="Inserisci il numero della matricola",
+                                            width=200)
+        self._txtNome = ft.TextField(value="Nome",
+                                      read_only=True)
+        self._txtCognome = ft.TextField(value="Cognome",
+                                        read_only=True)
+        self._btnCercaStudente = ft.ElevatedButton(text="Cerca studente",
+                                                   disabled=True)
+        self._btnCercaCorsi = ft.ElevatedButton(text="Cerca corsi",
+                                                disabled=True)
+        self._btnIscrivi = ft.ElevatedButton(text="Iscrivi",
+                                             disabled=True)
+        self._txtOut = ft.ListView(expand=True)
+        row_01 = ft.Container(self._title,
+                              alignment=ft.alignment.center)
+        row_02 = ft.Row([self._ddCorso, self._btnCercaIscritti],
+                        alignment=ft.MainAxisAlignment.CENTER)
+        row_03 = ft.Row([self._txtInMatricola, self._txtNome, self._txtCognome],
+                        alignment=ft.MainAxisAlignment.CENTER)
+        row_04 = ft.Row([self._btnCercaStudente, self._btnCercaCorsi, self._btnIscrivi],
+                        alignment=ft.MainAxisAlignment.CENTER)
+        self._page.add(row_01, row_02, row_03, row_04, self._txtOut)
         self._page.update()
 
     @property
