@@ -1,3 +1,14 @@
+from dataclasses import dataclass
+
+@dataclass
 class Studente:
-    def __init__(self):
-        pass
+    matricola: int
+    nome: str
+    cognome: str
+    cds: str
+
+    def __eq__(self, other):
+        return self.matricola == other.matricola
+
+    def __hash__(self):
+        return hash(self.matricola)

@@ -10,3 +10,9 @@ class Controller:
 
     def getCorsi(self):
         return self._model.corsoDao.getAllCorsi()
+
+    def cercaSIscritti(self, e):
+        corso = self._view._ddCorsi.value
+        if corso is None:
+            self._view.create_alert("Selezionare un corso!")
+            return

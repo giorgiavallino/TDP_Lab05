@@ -2,6 +2,7 @@
 
 from database.DB_connect import DBConnect
 from model.corso import Corso
+from model.studente import Studente
 
 class CorsoDAO:
 
@@ -17,5 +18,17 @@ class CorsoDAO:
         result = []
         for row in cursor:
             result.append(Corso(row["codins"], row["crediti"], row["nome"], row["pd"]))
+        cnx.close()
+        return result
+
+    def getAllStudenti(self):
+        cnx = DBConnect.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        query = """SELECT *
+                FROM studenti s"""
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(Studente(row["matricola"], row["nome"], row["cognome"], row["cds"]))
         cnx.close()
         return result
