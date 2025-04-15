@@ -52,7 +52,7 @@ class View():
         self._btnCercaCorsi = ft.ElevatedButton(text="Cerca corsi",
                                                 on_click=self._controller.cercaCorsiByMatricola)
         self._btnIscrivi = ft.ElevatedButton(text="Iscrivi",
-                                             disabled=True)
+                                             on_click=self._controller.iscrivi)
         self._txtOut = ft.ListView(expand=True)
         row_01 = ft.Container(self._title,
                               alignment=ft.alignment.center)

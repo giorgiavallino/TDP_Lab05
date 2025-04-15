@@ -1,7 +1,7 @@
 import flet as ft
+
 from model.corso import Corso
 from model.studente import Studente
-
 
 class Controller:
 
@@ -42,7 +42,7 @@ class Controller:
         codice_matricola = int(codice_matricola)
         matricole = self._model.getMatricole()
         if codice_matricola not in matricole:
-            self._view.create_alert("Nessuno studente possiede questa matricola!")
+            self._view.create_alert(f"Nessuno studente possiede questa matricola ({codice_matricola})!")
             self._view._txtInMatricola.value = ""
             self._view.update_page()
             return
@@ -66,7 +66,7 @@ class Controller:
         codice_matricola = int(codice_matricola)
         matricole = self._model.getMatricole()
         if codice_matricola not in matricole:
-            self._view.create_alert("Nessuno studente possiede questa matricola!")
+            self._view.create_alert(f"Nessuno studente possiede questa matricola ({codice_matricola})!")
             self._view._txtInMatricola.value = ""
             self._view.update_page()
             return
@@ -74,4 +74,37 @@ class Controller:
         self._view._txtOut.controls.append(ft.Text(f"Lo studente è iscritto a {len(corsi)} corsi: "))
         for corso in corsi:
             self._view._txtOut.controls.append(ft.Text(f"{corso.__str__()}"))
+        self._view.update_page()
+
+    def iscrivi(self, e):
+        self._view._txtOut.controls.clear()
+        codice_corso = self._view._ddCorsi.value
+        if codice_corso is None:
+            self._view.create_alert("Selezionare un corso!")
+            return
+        codice_matricola = self._view._txtInMatricola.value
+        if codice_matricola == "":
+            self._view.create_alert("Inserire un codice matricola!")
+            return
+        elif codice_matricola.isnumeric() == False:
+            self._view.create_alert("Inserire un codice numerico!")
+            self._view._txtInMatricola.value = ""
+            self._view.update_page()
+            return
+        codice_matricola = int(codice_matricola)
+        matricole = self._model.getMatricole()
+        if codice_matricola not in matricole:
+            self._view.create_alert(f"Nessuno studente possiede questa matricola ({codice_matricola})!")
+            self._view._txtInMatricola.value = ""
+            self._view.update_page()
+            return
+        corsi = self._model.getCorsiStudente(codice_matricola)
+        if codice_corso in corsi:
+            self._view.create_alert(f"Lo studente è già iscritto al corso {codice_corso}!")
+            self._view._ddCorsi.value = None
+            self._view.update_page()
+            return
+        self._model.iscrivi(codice_matricola, codice_corso)
+        self._view._txtOut.controls.append(ft.Text(f"Lo studente con matricola {codice_matricola} è stato iscritto correttamente al corso con codice {codice_corso}!",
+                                                    color="green"))
         self._view.update_page()

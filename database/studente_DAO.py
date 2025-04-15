@@ -18,6 +18,7 @@ class StudenteDAO:
         result = []
         for row in cursor:
             result.append(Studente(row["matricola"], row["nome"], row["cognome"], row["CDS"]))
+        cursor.close()
         cnx.close()
         return result
 
@@ -30,6 +31,7 @@ class StudenteDAO:
         result = []
         for row in cursor:
             result.append(row["matricola"])
+        cursor.close()
         cnx.close()
         return result
 
@@ -42,7 +44,32 @@ class StudenteDAO:
         cursor.execute(query, (codice_matricola,))
         row = cursor.fetchone()
         studente = Studente(row["matricola"], row["nome"], row["cognome"], row["CDS"])
+        cursor.close()
         cnx.close()
         return studente
 
+    def iscrivi(self, codice_matricola, codice_corso):
+        cnx = DBConnect.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        query = """INSERT INTO iscrizione
+                (matricola, codins)
+                VALUES (%s, %s)"""
+        cursor.execute(query, (codice_matricola, codice_corso))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        return
 
+    def getCorsiStudente(self, codice_matricola):
+        cnx = DBConnect.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        query = """SELECT codins
+                FROM iscrizione
+                WHERE matricola = %s"""
+        cursor.execute(query, (codice_matricola,))
+        result = []
+        for row in cursor:
+            result.append(row["codins"])
+        cursor.close()
+        cnx.close()
+        return result

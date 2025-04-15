@@ -21,3 +21,9 @@ class Model:
 
     def cercaCorsiByMatricola(self, codice_matricola):
         return self.corsoDao.cercaCorsiByMatricola(codice_matricola)
+
+    def iscrivi(self, codice_matricola, codice_corso):
+        return self.studenteDao.iscrivi(codice_matricola, codice_corso)
+
+    def getCorsiStudente(self, codice_matricola):
+        return self.studenteDao.getCorsiStudente(codice_matricola)

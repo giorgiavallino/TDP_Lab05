@@ -17,6 +17,7 @@ class CorsoDAO:
         result = []
         for row in cursor:
             result.append(Corso(row["codins"], row["crediti"], row["nome"], row["pd"]))
+        cursor.close()
         cnx.close()
         return result
 
@@ -30,5 +31,6 @@ class CorsoDAO:
         result = []
         for row in cursor:
             result.append(Corso(row["codins"], row["crediti"], row["nome"], row["pd"]))
+        cursor.close()
         cnx.close()
         return result
